@@ -4,7 +4,16 @@ logado antes de acessar qualquer pagina.
 */
 
 // import do criador de contexto e a tipagem do react
-import {createContext, ReactNode, useState} from 'react'
+import { createContext, ReactNode, useState } from 'react'
+
+// import da api, foi criado e feita as config
+import { api } from '../services/apiClient';
+
+// destroyCookie para destruir o cookie da aplicação
+// setCookie para salvar um cookie
+import { destroyCookie, setCookie, parseCookies } from 'nookies'
+
+import Router from 'next/router'
 
 /* tipagem para o AuthContextData
     recege as propriedades do usuário
@@ -15,6 +24,7 @@ type AuthContextData = {
   user: UserProps;
   isAuthenticated: boolean;
   signIn: (credentials: SignInProps) => Promise<void>;
+  signOut: () => void;
 }
 
 /* tipagem que recebe as informações do usuario atraves da API */
@@ -37,8 +47,19 @@ type AuthProviderProps = {
 tipo AuthContextData que foi criado no inicio do código */
 export const AuthContext = createContext({} as AuthContextData);
 
+// funcao para deslogar o usuário
+export function signOut() {
+  try {
+    destroyCookie(undefined, '@dymanager.token')
+    Router.push('/')
+  } catch {
+    console.log('Erro ao deslogar.')
+  }
+}
+
+
 /* aqui é quem vai prover informações*/
-export function AuthProvider({children}: AuthProviderProps){
+export function AuthProvider({ children }: AuthProviderProps) {
 
   // aqui é criado o UserProps, onde recebemos os dados do usuário
   const [user, setUser] = useState<UserProps>();
@@ -49,12 +70,41 @@ export function AuthProvider({children}: AuthProviderProps){
    */
   const isAuthenticated = !!user;
 
-  async function signIn(){
-    alert('Clicou no login')
+  // signIn recebe os dados de email e senha
+  async function signIn({ email, password }: SignInProps) {
+    try {
+      const response = await api.post('/session', {
+        email,
+        password
+      })
+
+      const { id, name, token } = response.data;
+
+      setCookie(undefined, '@dymanager.token', token, {
+        maxAge: 60 * 60 * 24, //expirar em um dia
+        path: '/' // quais caminhos terão acesso ao cookie
+      });
+
+      setUser({
+        id,
+        name,
+        email
+      })
+
+      // passar para as proximas requisições o token
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+      // redirecionar o usuario para a pagina inicial
+      Router.push('/dashboard');
+
+      //console.log(response.data);
+    } catch (err) {
+      console.log('Erro ao acessar', err)
+    }
   }
 
-  return(
-    <AuthContext.Provider value={{user, isAuthenticated, signIn}}>
+  return (
+    <AuthContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   )

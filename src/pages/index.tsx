@@ -11,12 +11,21 @@ import { Button } from '../components/ui/Button'
 
 /* contexto */
 import { AuthContext } from '../contexts/AuthContext'
-import { useContext, FormEvent} from 'react'
+import { useContext, FormEvent, useState} from 'react'
 
 export default function Home() {
 
   // aqui é chamada a funçao sigIn do context
   const { signIn } = useContext(AuthContext);
+
+  /* aqui são os estados 
+      tem como função receber o que foi digitado pelo usuário
+      setEmail e setPassword são utilizados como função no evento do input       
+  */
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [loading, setLoading] = useState(false);
 
   // FormEvent é apenas para não recarregar a pagina
   // então isso altera o comportamento para não recarregar
@@ -25,8 +34,8 @@ export default function Home() {
     event.preventDefault();
 
     let data = {
-      email: 'teste@teste.com',
-      password: '123'
+      email,
+      password
     }
 
     await signIn(data);
@@ -55,10 +64,16 @@ export default function Home() {
           <form onSubmit={handleLogin}>
             <Input placeholder='Digite seu e-mail'
               type='text'
+              value={email}
+              onChange={ (e) => setEmail(e.target.value)}
             />
 
             <Input placeholder='Digite sua senha'
-              type='password' />
+              type='password'
+              value={password}
+              onChange={ (e) => setPassword(e.target.value)}
+            />
+              
 
             <Button
               type="submit"
