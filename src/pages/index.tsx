@@ -13,6 +13,13 @@ import { Button } from '../components/ui/Button'
 import { AuthContext } from '../contexts/AuthContext'
 import { useContext, FormEvent, useState} from 'react'
 
+// import para usar links
+import Link from 'next/link'
+
+import { canSSRGuest } from '../utils/canSSRGuest'
+
+import { toast } from 'react-toastify'
+
 export default function Home() {
 
   // aqui é chamada a funçao sigIn do context
@@ -33,12 +40,21 @@ export default function Home() {
     // utilizar preventDefault para não recarregar a pagina
     event.preventDefault();
 
+    if (email === '' || password === ''){
+      toast.warning('Preencha os campos.')
+      return;
+    }
+
+    setLoading(true);
+
     let data = {
       email,
       password
     }
 
     await signIn(data);
+
+    setLoading(false);
   }
 
   return (
@@ -72,12 +88,11 @@ export default function Home() {
               type='password'
               value={password}
               onChange={ (e) => setPassword(e.target.value)}
-            />
-              
+            />              
 
             <Button
               type="submit"
-              loading={false}
+              loading={loading}
             >
               Acessar
             </Button>
@@ -92,3 +107,11 @@ export default function Home() {
     </>
   )
 }
+
+export const getServerSideProps = canSSRGuest(async (ctx)=> {
+  return {
+    props: {
+      
+    }
+  }
+})

@@ -4,7 +4,7 @@ logado antes de acessar qualquer pagina.
 */
 
 // import do criador de contexto e a tipagem do react
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useState, useEffect } from 'react'
 
 // import da api, foi criado e feita as config
 import { api } from '../services/apiClient';
@@ -14,6 +14,9 @@ import { api } from '../services/apiClient';
 import { destroyCookie, setCookie, parseCookies } from 'nookies'
 
 import Router from 'next/router'
+
+// import de alerta personalizado
+import { toast } from 'react-toastify'
 
 /* tipagem para o AuthContextData
     recege as propriedades do usuário
@@ -70,6 +73,29 @@ export function AuthProvider({ children }: AuthProviderProps) {
    */
   const isAuthenticated = !!user;
 
+  useEffect(()=>{
+    // tentar pegar algo no cookie
+
+    const {'@dymanager.token': token} = parseCookies();
+
+    if(token){
+      api.get('/me').then(response => {
+        const {id, name, email} = response.data;
+
+        setUser({
+          id,
+          name,
+          email
+        })
+
+      })
+      .catch(() =>  {
+        // se deu errado vamos deslogar o usuario
+        signOut();
+      })
+    }
+  }, [])
+
   // signIn recebe os dados de email e senha
   async function signIn({ email, password }: SignInProps) {
     try {
@@ -94,11 +120,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       // passar para as proximas requisições o token
       api.defaults.headers['Authorization'] = `Bearer ${token}`
 
+      toast.success('Bem vindo!');
+      
       // redirecionar o usuario para a pagina inicial
       Router.push('/dashboard');
 
       //console.log(response.data);
     } catch (err) {
+      toast.error('Erro ao acessar.')
       console.log('Erro ao acessar', err)
     }
   }

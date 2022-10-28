@@ -12,7 +12,7 @@ export function setupAPIClient(ctx = undefined){
   let cookies = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: 'http://localhost:3333',
+    baseURL: 'https://dymanager.herokuapp.com/',
     headers: {
       Authorization: `Bearer ${cookies['@dymanager.token']}`
     }
