@@ -13,6 +13,7 @@ export function setupAPIClient(ctx = undefined){
 
   const api = axios.create({
     baseURL: 'https://dymanager.herokuapp.com/',
+    //baseURL: 'http://localhost:3333',
     headers: {
       Authorization: `Bearer ${cookies['@dymanager.token']}`
     }
