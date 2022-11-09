@@ -127,7 +127,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       //console.log(response.data);
     } catch (err) {
-      toast.error('Erro ao acessar. ' + err)
+      toast.error('Usuário/Senha inválido.')
       console.log('Erro ao acessar', err)
     }
   }

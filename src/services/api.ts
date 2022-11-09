@@ -36,5 +36,4 @@ export function setupAPIClient(ctx = undefined){
   })
 
   return api;
-
 }
