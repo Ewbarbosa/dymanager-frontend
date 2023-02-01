@@ -173,7 +173,7 @@ export default function Client() {
               </Tab>
               <hr></hr>
               <Tab className={styles.tab}>
-                <button>
+                <button disabled={true}>
                   2
                 </button>
               </Tab>
