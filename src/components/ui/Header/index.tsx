@@ -5,6 +5,7 @@ import styles from './styles.module.scss'
 import Link from 'next/link'
 
 import { FiLogOut } from 'react-icons/fi'
+import { FaBars } from 'react-icons/fa'
 
 export function Header() {
 
@@ -33,7 +34,6 @@ export function Header() {
               <FiLogOut color="#fff" />
             </button>
           </nav>
-
         </div>
       </header>
     </>
