@@ -63,7 +63,7 @@ export default function Home() {
     <>
       <Head>
         <title>
-          DyManager - Faça seu login
+          DyManager - Acesse sua conta
         </title>
       </Head>
 

@@ -12,8 +12,8 @@ export function setupAPIClient(ctx = undefined) {
   let cookies = parseCookies(ctx);
 
   const api = axios.create({
-    baseURL: 'https://dymanager-backend-production.up.railway.app/',
-    //baseURL: 'http://localhost:3333',
+    //baseURL: 'https://dymanager-backend-production.up.railway.app/',
+    baseURL: 'http://dytech.sytes.net:3333',
     headers: {
       Authorization: `Bearer ${cookies['@dymanager.token']}`
     }
