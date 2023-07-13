@@ -13,7 +13,8 @@ export function setupAPIClient(ctx = undefined) {
 
   const api = axios.create({
     //baseURL: 'https://dymanager-backend-production.up.railway.app/',
-    baseURL: 'http://dytech.sytes.net:3333',
+    //baseURL: 'http://dytech.sytes.net:3333',
+    baseURL: 'https://dymanager-api.onrender.com',
     headers: {
       Authorization: `Bearer ${cookies['@dymanager.token']}`
     }
