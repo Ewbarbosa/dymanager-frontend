@@ -1,6 +1,11 @@
 .logo2 {
   color: var(--blue);
   font-size: 1.2rem;
+  transition: 0.6s;
+
+  &:hover {
+    //border-bottom: 1px solid var(--white);
+  }
 }
 
 .header {
@@ -84,6 +89,11 @@
     padding-block: 16px;
     font-size: 18px;
     color: var(--white);
+    transition: 0.5s;
+    
+    &:hover{
+      color: var(--blue);
+    }
   }
 }
 
