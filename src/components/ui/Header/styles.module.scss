@@ -1,5 +1,5 @@
 .logo2 {
-  color: var(--white);
+  color: var(--blue);
   font-size: 1.2rem;
 }
 
@@ -10,36 +10,75 @@
   z-index: 10;
 }
 
+// botão do menu
+.hamburger {
+  display: none;
+  border: none;
+  background: none;
+  border-top: 3px solid var(--white);
+  cursor: pointer;
+
+  /* se a tela for menor que o valor abaixo o botão aparece*/
+  @media (max-width: 999px) {
+    display: block;
+    z-index: 10;
+  }
+
+  /* aqui .x é uma classe que é utilizada somente qnd ACTIVE = TRUE */
+  &.x {
+    //position: fixed;
+    //top: 26px;
+    //right: 16px;
+    border-top-color: transparent;
+  }
+
+  &.x::before {
+    transform: rotate(135deg);
+  }
+
+  &.x::after {
+    transform: rotate(-135deg);
+    top: -7px;
+  }
+}
+
+//  aqui é o antes e depois do botão
+.hamburger::before,
+.hamburger::after {
+  content: " ";
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: var(--white);
+  margin-top: 5px;
+  position: relative;
+  transition: 0.3s;
+}
+
 .nav {
   max-width: 1280px;
-  height: 8vh;
+  height: 9vh;
   margin-inline: auto;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  button {
-    display: none;
-    background: transparent;
-    border: 0;
-
-    transition: transform 0.6s;
-
-    &:hover {
-      transform: scale(1.2);
-    }
-
-    @media (max-width: 999px) {
-      display: block;
-      z-index: 10;
-    }
-  }
 }
 
 .list {
   display: flex;
+  align-items: center;
   gap: 32px;
+
+  button {
+    background: transparent;
+    border: 0;
+    transition: transform 0.4s;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
 
   a {
     padding-block: 16px;
@@ -49,6 +88,7 @@
 }
 
 @media (max-width: 999px) {
+
   .list {
     position: fixed;
     top: 0;
@@ -69,14 +109,45 @@
     &.active {
       clip-path: circle(1500px at 100% -20%);
       pointer-events: all;
+
+      a {
+        opacity: 1;
+      }
     }
 
-    li {
-      padding: 1.5rem;      
-    }
-
+    // botão sair  
     button {
       margin-top: 2.5rem;
+    }
+  }
+
+  .list {
+    li {
+      padding: 1.5rem;
+    }
+
+    a {
+      opacity: 0;
+    }
+
+    li:nth-child(1) a {
+      transition: 0.5s 0.2s;
+    }
+
+    li:nth-child(2) a {
+      transition: 0.5s 0.3s;
+    }
+
+    li:nth-child(3) a {
+      transition: 0.5s 0.4s;
+    }
+
+    li:nth-child(4) a {
+      transition: 0.5s 0.5s;
+    }
+
+    li:nth-child(5) a {
+      transition: 0.5s 0.6s;
     }
   }
 }

@@ -30,37 +30,23 @@ export function Header() {
             <a className={styles.logo2}>DyManager</a>
           </Link>
 
-          <button onClick={activeMenu}>
-            {
-              // renderização condicional
-              // se active = true aparece o botao FaTimes
-              active ? <FaTimes size={24} color='#fff' />
-                :
-                <FaBars size={24} color='#fff' />
-            }
-          </button>
+          <button className={`${styles.hamburger} ${active ? styles.x : ""}`} onClick={activeMenu}></button>
 
           <ul className={`${styles.list} ${active ? styles.active : ""}`}>
             <li>
-              <Link href="/dashboard" onClick={activeMenu}>
-                <a>Home</a>
+              <Link href="/dashboard">
+                <a onClick={activeMenu}>Home</a>
               </Link>
             </li>
             <li>
-              <Link href="/client" onClick={activeMenu}>
-                <a>Clientes</a>
+              <Link href="/client">
+                <a onClick={activeMenu}>Clientes</a>
               </Link>
             </li>
 
             <li>
               <Link href="/process">
                 <a>Processos</a>
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/call">
-                <a>Atendimentos</a>
               </Link>
             </li>
 
