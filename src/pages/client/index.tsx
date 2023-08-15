@@ -8,9 +8,12 @@ import { Header } from '../../components/ui/Header'
 import { Input } from '../../components/ui/Input'
 import { Button } from '../../components/ui/Button'
 
+import { FiSearch } from 'react-icons/fi'
+
 import { mask } from 'remask'
 
 import { setupAPIClient } from '../../services/api'
+import apiCEP from '../../services/apiCEP'
 
 export default function Client() {
 
@@ -63,6 +66,27 @@ export default function Client() {
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  async function handleCep() {
+    if (zip_code === '') {
+      return
+    }
+
+    try {
+      const response = await apiCEP.get(`${zip_code}/json`);
+      console.log(response.data);
+
+      setZip_code(response.data.cep);
+      setStreet(response.data.logradouro);
+      setDistrict(response.data.bairro);
+      setCity(response.data.localidade);
+      setState(response.data.uf);
+
+    } catch {
+      toast.warning('Erro ao buscar o CEP!');
+    }
+  }
+
 
   async function handle(event: FormEvent) {
     event.preventDefault();
@@ -168,13 +192,13 @@ export default function Client() {
             <TabList className={styles.bloc}>
               <Tab className={styles.tab}>
                 <button>
-                  1
+                  Dados Pessoais
                 </button>
               </Tab>
               <hr></hr>
               <Tab className={styles.tab}>
                 <button disabled={true}>
-                  2
+                  Endereço
                 </button>
               </Tab>
             </TabList>
@@ -250,6 +274,9 @@ export default function Client() {
                   value={zip_code}
                   onChange={(e) => setZip_code(e.target.value)}
                 />
+                <button onClick={handleCep}>
+                  <FiSearch size={18} color="#fff" />
+                </button>
                 <Input placeholder='Bairro'
                   value={district}
                   onChange={(e) => setDistrict(e.target.value)}
