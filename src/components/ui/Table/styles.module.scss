@@ -1,0 +1,9 @@
+.container{
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 0 2rem;
+  
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}

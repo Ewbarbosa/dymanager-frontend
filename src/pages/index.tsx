@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../../styles/home.module.scss'
 
 // logo do sistema
-import logo from '../../public/logo.png'
+//import logo from '../../public/logo.png'
 
 // componentes
 import { Input } from '../components/ui/Input'
@@ -108,10 +108,10 @@ export default function Home() {
   )
 }
 
-export const getServerSideProps = canSSRGuest(async (ctx)=> {
+export const getServerSideProps = canSSRGuest(async (ctx)=> {   
+
   return {
-    props: {
-      
+    props: {      
     }
   }
 })
