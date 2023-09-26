@@ -5,9 +5,13 @@ import { useState } from 'react'
 import Head from 'next/head'
 import { Header } from '../../components/ui/Header'
 import { Table } from '../../components/ui/Table'
-import { Form } from '../../components/ui/Form'
 
 import { setupAPIClient } from '../../services/api'
+
+import Modal from 'react-modal'
+import { ModalFormClient } from '../../components/ui/ModalFormClient'
+
+import { MdOutlineAddCircle } from 'react-icons/md'
 
 import { canSSRAuth } from '../../utils/canSSRAuth'
 
@@ -28,20 +32,36 @@ export default function Client({ clients }: HomeProps) {
   const [company, setCompany] = useState('');
   const [office, setOffice] = useState('');
 
+  const [modalItem, setModalItem] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  function handleCloseModal() {
+    setModalVisible(!modalVisible);
+  }
+
+  Modal.setAppElement('#__next');
+
   return (
     <>
       <Head>
         <title> Novo Cliente - DyManager</title>
       </Head>
 
-      <div>
-        <Header />
+      <Header />
 
-        <Table clients={clients} />
-
-        <Form />
-
+      <div
+        className={styles.container}>
+        <MdOutlineAddCircle onClick={handleCloseModal} color='#fff' size={36} />
       </div>
+
+      <Table clients={clients} />
+
+      {modalVisible && (
+        <ModalFormClient 
+          isOpen={modalVisible}
+          onRequestClose={handleCloseModal}
+        />
+      )}
     </>
   )
 }

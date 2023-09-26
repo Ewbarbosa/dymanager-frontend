@@ -4,6 +4,36 @@ import { useState } from 'react';
 import { TableHTMLAttributes } from 'react';
 import DataTable, { TableColumn, createTheme } from 'react-data-table-component';
 
+import { MdOutlineAddCircle } from 'react-icons/md'
+
+const customStyles = {
+  title: {
+    style: {
+      //fontColor: 'red',
+      //fontWeight: '900',
+    }
+  },
+  rows: {
+    style: {
+      //minHeight: '50px', // override the row height
+    }
+  },
+  headCells: {
+    style: {
+      fontSize: '18px',
+      fontWeight: '600',
+      //paddingLeft: '0 8px'
+    },
+  },
+  cells: {
+    style: {
+      fontSize: '16px',
+      //paddingLeft: '0 8px',
+    },
+  },
+};
+
+
 // createTheme creates a new theme named solarized that overrides the build in dark theme
 createTheme('solarized', {
   text: {
@@ -50,11 +80,13 @@ export function Table({ clients }: TableProps) {
   const columns: TableColumn<DataRow>[] = [
     {
       name: 'CPF/CNPJ',
-      selector: row => row.cnpjcpf
+      selector: row => row.cnpjcpf,
+      sortable: true
     },
     {
       name: 'Nome Completo',
-      selector: row => row.name
+      selector: row => row.name,
+      sortable: true
     },
     {
       name: 'E-mail',
@@ -64,10 +96,13 @@ export function Table({ clients }: TableProps) {
 
   return (
     <div className={styles.container}>
+      
       <DataTable
+        title="Lista de Clientes"
         columns={columns}
         data={clientList}
         theme="solarized"
+        customStyles={customStyles}
       />
     </div>
   )

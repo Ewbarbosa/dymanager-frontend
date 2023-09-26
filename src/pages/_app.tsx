@@ -14,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <Component {...pageProps} />
+      
       {/* aqui é a confg do alerta */}
       <ToastContainer autoClose={2000} />
     </AuthProvider>  

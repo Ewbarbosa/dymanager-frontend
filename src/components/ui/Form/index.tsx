@@ -243,28 +243,36 @@ export function Form() {
             </form>
           </TabPanel>
 
+          {/* aqui inicia aba de ENDEREÇO */}
           <TabPanel>
             <h1>Endereço</h1>
             <form className={styles.form} onSubmit={handle}>
-              <Input placeholder='Rua/Avenida'
+              <Input placeholder='Rua/Avenida, 123'
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
               />
-              <Input placeholder='CEP'
-                value={zip_code}
-                onChange={(e) => setZip_code(e.target.value)}
-              />
-              <button onClick={handleCep}>
-                <FiSearch size={18} color="#fff" />
-              </button>
+
+              {/* button de busca CEP */}
+              <div className={styles.btCep}>
+                <Input placeholder='CEP'
+                  value={zip_code}
+                  onChange={(e) => setZip_code(e.target.value)}
+                />
+                <button onClick={handleCep}>
+                  <FiSearch size={20} color="#fff" />
+                </button>
+              </div>
+
               <Input placeholder='Bairro'
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
               />
+
               <Input placeholder='Cidade'
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
+
               <Input placeholder='Estado'
                 value={state}
                 onChange={(e) => setState(e.target.value)}
@@ -287,6 +295,7 @@ export function Form() {
             </form>
           </TabPanel>
         </Tabs>
+
       </main>
     </>
   )

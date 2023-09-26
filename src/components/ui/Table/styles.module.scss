@@ -6,4 +6,10 @@
   display: flex;
   justify-content: space-between;
   flex-direction: column;
+
+  svg {
+    color: var(--white);
+    margin: 8px;
+    cursor: pointer;
+  }
 }
