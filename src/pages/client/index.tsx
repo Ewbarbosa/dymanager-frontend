@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 import Head from 'next/head'
 import { Header } from '../../components/ui/Header'
+
 import { Table } from '../../components/ui/Table'
 
 import { setupAPIClient } from '../../services/api'
@@ -16,18 +17,13 @@ import { MdOutlineAddCircle } from 'react-icons/md'
 import { canSSRAuth } from '../../utils/canSSRAuth'
 
 // tipagem para o objeto recebido do server side
-type ClientProps = {
-  //id: number;
-  name: string;
+type Client = {
+  nome: string;
+  cpf: string;
+  telefone: string;
 }
 
-// interface 
-// aqui o clients é uma array de obj do tipo ClientProps
-interface HomeProps {
-  clients: ClientProps[];
-}
-
-export default function Client({ clients }: HomeProps) {
+export default function Client({ clients }) {
 
   const [company, setCompany] = useState('');
   const [office, setOffice] = useState('');
@@ -41,6 +37,16 @@ export default function Client({ clients }: HomeProps) {
 
   Modal.setAppElement('#__next');
 
+  var array: Array<Client> = [];
+
+  for (let i = 0; i < clients.length; i++) {
+    let nome = clients[i].name;
+    let cpf = clients[i].cnpjcpf;
+    let telefone = clients[i].telephone;
+    
+    array.push({nome, cpf, telefone});
+  }
+
   return (
     <>
       <Head>
@@ -49,15 +55,13 @@ export default function Client({ clients }: HomeProps) {
 
       <Header />
 
-      <div
-        className={styles.container}>
+      <div className={styles.container}>
         <MdOutlineAddCircle onClick={handleCloseModal} color='#fff' size={36} />
+        <Table data={array} />
       </div>
 
-      <Table clients={clients} />
-
       {modalVisible && (
-        <ModalFormClient 
+        <ModalFormClient
           isOpen={modalVisible}
           onRequestClose={handleCloseModal}
         />

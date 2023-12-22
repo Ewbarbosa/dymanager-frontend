@@ -1,7 +1,17 @@
 .container{
-  position: relative;
-  top: 3vw;
-  left: 15vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+
+  width: 100vw;
+  height: auto; 
+
+  margin-top: 1.5rem;
+  margin-bottom: -65px;
+
+  //background-color: aqua;
 
   svg {
     cursor: pointer;

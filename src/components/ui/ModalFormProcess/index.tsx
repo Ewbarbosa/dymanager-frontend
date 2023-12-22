@@ -1,16 +1,17 @@
+import styles from './styles.module.scss'
+
 import Modal from 'react-modal'
-import { Form } from '../Form'
+
+import { FormProcess } from '../FormProcess'
 
 import { FiX } from 'react-icons/fi'
 
-import styles from './styles.module.scss'
-
-interface ModalClientProps {
+interface ModalProcessProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-export function ModalFormClient({ isOpen, onRequestClose }: ModalClientProps) {
+export function ModalFormProcess({ isOpen, onRequestClose }: ModalProcessProps) {
 
   const customStyles = {
     content: {
@@ -24,21 +25,20 @@ export function ModalFormClient({ isOpen, onRequestClose }: ModalClientProps) {
       backgroundColor: '#202024'
     }
   }
-  
+
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onRequestClose}
       style={customStyles}
     >
+
       <button
         type='button'
-        onClick={onRequestClose}
-        className={styles.modal}
-        style={{ background: 'transparent', border: 0 }}>
-        <FiX size={45} color='#f34748' />
+      >
+        <FiX size={45} color='#f34748' />        
       </button>
-      <Form />
-    </Modal>
+      <FormProcess />
+    </Modal >
   )
+
 }
