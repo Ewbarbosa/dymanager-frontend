@@ -83,10 +83,10 @@ export function Form() {
 
   async function handle(event: FormEvent) {
     event.preventDefault();
-    if (street === '' || zip_code === '' || district === '' || city === '' || state === '') {
-      toast.warning('Preencha os campos.');
-      return;
-    }
+    //if (street === '' || zip_code === '' || district === '' || city === '' || state === '') {
+    //  toast.warning('Preencha os campos.');
+    //  return;
+    //}
 
     setLoading(true);
 
@@ -158,10 +158,10 @@ export function Form() {
   function nextTab(event: FormEvent) {
     event.preventDefault();
 
-    if (name === '' || cnpjcpf === '' || telephone === '' || email === '') {
-      toast.warning('Preencha os campos.');
-      return;
-    }
+    //if (name === '' || cnpjcpf === '' || telephone === '' || email === '') {
+    //  toast.warning('Preencha os campos.');
+    //  return;
+    //}
 
     changeTab();
   }
