@@ -1,28 +1,55 @@
 import styles from './styles.module.scss'
 
-import { Input } from '../Input'
-import { Button } from '../Button'
+import { Input } from '../../components/ui/Input'
+import { Button } from '../../components/ui/Button'
+import { Header } from '../../components/ui/Header';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { FormEvent, useState, useContext } from 'react'
 
-import { ClientContext } from '../../../contexts/ClientContext'
+import { ClientContext } from '../../contexts/ClientContext'
 
-import { api } from '../../../services/apiClient'
+import { api } from '../../services/apiClient'
 import { toast } from 'react-toastify'
 
-import AsyncSelect from 'react-select/async'
+import Select, { MultiValue } from 'react-select'
 
-import Select from 'react-select'
+import { canSSRAuth } from '../../utils/canSSRAuth'
+import { setupAPIClient } from '../../services/api'
 
-import { canSSRAuth } from '../../../utils/canSSRAuth';
-import { setupAPIClient } from '../../../services/api'
+import Head from 'next/head';
 
-export function FormProcess() {
+interface OptionProps {
+  value: number;
+  label: string;
+}
+
+type SelectOption = {
+  label: string;
+  value: number;
+}
+
+type MultipleSelect = {
+  multiple: true;
+  value: SelectOption[];
+  onChange: (value: SelectOption[]) => void;
+}
+
+export default function NewProcess({ clients }) {
+
+  var array: Array<OptionProps> = [];
+
+  for (let i = 0; i < clients.length; i++) {
+    let value = clients[i].id;
+    let label = clients[i].cnpjcpf;
+
+    array.push({ value, label });
+  }
+
+  const [optionSelected, setOptionSelected] = useState<MultiValue<SelectOption>>([array[0]])
 
   const { searchClient } = useContext(ClientContext);
 
-  const [id, setId] = useState('');
   const [forum, setForum] = useState('');
   const [number, setNumber] = useState('');
   const [courtDivision, setCourtDivision] = useState('');
@@ -32,8 +59,6 @@ export function FormProcess() {
   const [status, setStatus] = useState('');
   const [observation, setObservation] = useState('');
   const [clientId, setClientId] = useState('');
-
-  const [cnpjcpf, setCnpjcpf] = useState('');
 
   const [loading, setLoading] = useState(false);
 
@@ -55,12 +80,22 @@ export function FormProcess() {
       cause_value: parseFloat(causeValue),
       status: status,
       observation: observation,
-      client_id: parseInt(clientId)
+      user_id: 2
     })
+
+    for (let i = 0; i < optionSelected.length; i++) {
+      const res = await api.post('/clientprocess', {
+        client_id: optionSelected[i].value,
+        process_id: response.data.id
+      })
+
+      console.log(optionSelected)
+      console.log(response.data.id)
+      console.log(res.data)
+    }
 
     toast.success('Salvo com sucesso!')
 
-    setId('');
     setForum('');
     setNumber('');
     setCourtDivision('');
@@ -77,11 +112,14 @@ export function FormProcess() {
   async function search(cnpjcpf: string) {
 
     await searchClient(cnpjcpf);
-
   }
 
   return (
     <>
+      <Head>
+        <title>Novo Processo - DyManager</title>
+      </Head>
+      <Header />
       <main className={styles.container}>
         <Tabs className={styles.tabs}>
           <TabList className={styles.bloc}>
@@ -95,11 +133,7 @@ export function FormProcess() {
           <TabPanel>
             <h1>Dados do Processo</h1>
             <form className={styles.form} onSubmit={addProcess}>
-              <Input
-                placeholder='ID'
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-              />
+
               <Input
                 placeholder='Fórum'
                 value={forum}
@@ -143,7 +177,37 @@ export function FormProcess() {
               />
 
               <Select
+                className='select'
                 isMulti
+                options={array}
+                placeholder='Selecione ao menos uma opção'
+                closeMenuOnSelect={false}
+                onChange={value => setOptionSelected(value)}
+                styles={{
+                  control: (styles) => {
+                    return {
+                      ...styles,
+                      backgroundColor: '#202024',
+                      color: '#fff',
+                      border: 'solid 1px #fff',
+                      borderRadius: '8px'
+                    }
+                  },
+                  option: (styles) => {
+                    return {
+                      ...styles,
+                      backgroundColor: '#202024',
+                      color: '#fff',
+                    }
+                  },
+                  placeholder: (styles) => {
+                    return {
+                      ...styles,
+                      color: '#3e4956'
+                    }
+
+                  }
+                }}
               />
 
               <br />
@@ -156,6 +220,7 @@ export function FormProcess() {
                 Salvar
               </Button>
             </form>
+            <Button onClick={() => console.log(optionSelected)}>Exibir</Button>
           </TabPanel>
         </Tabs>
       </main>
@@ -171,13 +236,13 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
   const res = await api.get('/clients');
 
-  console.log(res.data);
+  //console.log(res.data);
 
   //console.log(response.data);
 
   return {
     props: {
-      process: response.data
+      clients: res.data
     }
   }
 })

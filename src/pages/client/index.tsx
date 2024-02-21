@@ -2,6 +2,8 @@ import styles from './styles.module.scss'
 
 import { useState } from 'react'
 
+import Link from 'next/link'
+
 import Head from 'next/head'
 import { Header } from '../../components/ui/Header'
 
@@ -16,8 +18,11 @@ import { MdOutlineAddCircle } from 'react-icons/md'
 
 import { canSSRAuth } from '../../utils/canSSRAuth'
 
+import { useEffect } from 'react'
+
 // tipagem para o objeto recebido do server side
-type Client = {
+export type ClientProps = {
+  id: number;
   nome: string;
   cpf: string;
   telefone: string;
@@ -25,11 +30,9 @@ type Client = {
 
 export default function Client({ clients }) {
 
-  const [company, setCompany] = useState('');
-  const [office, setOffice] = useState('');
-
-  const [modalItem, setModalItem] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const [listClient, setListClient] = useState<ClientProps[]>([]);
 
   function handleCloseModal() {
     setModalVisible(!modalVisible);
@@ -37,15 +40,20 @@ export default function Client({ clients }) {
 
   Modal.setAppElement('#__next');
 
-  var array: Array<Client> = [];
+  var array: Array<ClientProps> = [];
 
   for (let i = 0; i < clients.length; i++) {
+    let id = clients[i].id;
     let nome = clients[i].name;
     let cpf = clients[i].cnpjcpf;
     let telefone = clients[i].telephone;
-    
-    array.push({nome, cpf, telefone});
+
+    array.push({ id, nome, cpf, telefone });
   }
+
+  useEffect(() => {
+    setListClient(clients);
+  }, [])
 
   return (
     <>
@@ -56,7 +64,13 @@ export default function Client({ clients }) {
       <Header />
 
       <div className={styles.container}>
-        <MdOutlineAddCircle onClick={handleCloseModal} color='#fff' size={36} />
+        <div className={styles.content}>
+          <h1>Novo Cliente</h1>
+          {/*<MdOutlineAddCircle onClick={handleCloseModal} color='#fff' size={36} />*/}
+          <Link href="/newclient">
+            <MdOutlineAddCircle color='#fff' size={36} />
+          </Link>
+        </div>
         <Table data={array} />
       </div>
 

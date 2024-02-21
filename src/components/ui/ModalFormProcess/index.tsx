@@ -6,6 +6,9 @@ import { FormProcess } from '../FormProcess'
 
 import { FiX } from 'react-icons/fi'
 
+import { canSSRGuest } from '../../../utils/canSSRGuest';
+import { setupAPIClient } from '../../../services/api';
+
 interface ModalProcessProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -30,13 +33,18 @@ export function ModalFormProcess({ isOpen, onRequestClose }: ModalProcessProps) 
     <Modal
       isOpen={isOpen}
       style={customStyles}
+      onRequestClose={onRequestClose}
     >
 
       <button
         type='button'
+        onClick={onRequestClose}
+        className={styles.modal}
+        style={{ background: 'transparent', border: 0 }}
       >
-        <FiX size={45} color='#f34748' />        
+        <FiX size={45} color='#f34748' />
       </button>
+
       <FormProcess />
     </Modal >
   )

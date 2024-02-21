@@ -24,7 +24,7 @@ export function ModalFormClient({ isOpen, onRequestClose }: ModalClientProps) {
       backgroundColor: '#202024'
     }
   }
-  
+
   return (
     <Modal
       isOpen={isOpen}
@@ -35,7 +35,8 @@ export function ModalFormClient({ isOpen, onRequestClose }: ModalClientProps) {
         type='button'
         onClick={onRequestClose}
         className={styles.modal}
-        style={{ background: 'transparent', border: 0 }}>
+        style={{ background: 'transparent', border: 0 }}
+      >
         <FiX size={45} color='#f34748' />
       </button>
       <Form />

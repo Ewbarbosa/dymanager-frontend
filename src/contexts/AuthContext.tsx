@@ -1,7 +1,3 @@
-// Contexto
-/* a função deste arquivo é validar se o usuario está
-logado antes de acessar qualquer pagina.
-*/
 
 // import do criador de contexto e a tipagem do react
 import { createContext, ReactNode, useState, useEffect } from 'react'

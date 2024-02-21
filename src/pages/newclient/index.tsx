@@ -1,22 +1,28 @@
 import styles from './styles.module.scss'
 
-import { setupAPIClient } from '../../../services/api'
+import { Input } from '../../components/ui/Input'
+import { Button } from '../../components/ui/Button'
+import { Header } from '../../components/ui/Header';
+
+import Link from 'next/link';
+
+import Head from 'next/head';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { Input } from '../Input'
-import { Button } from '../Button'
+import { FormEvent, useState, useContext } from 'react'
+
+import { ClientContext } from '../../contexts/ClientContext'
+
+import { api } from '../../services/apiClient'
+import apiCEP from '../../services/apiCEP'
+
+import { toast } from 'react-toastify'
+import { mask } from 'remask'
 
 import { FiSearch } from 'react-icons/fi'
 
-import { FormEvent, useState } from 'react'
+export default function NewClient() {
 
-import apiCEP from '../../../services/apiCEP'
-
-import { mask } from 'remask'
-
-import { toast } from 'react-toastify'
-
-export function Form() {
   const [tabIndex, setTabIndex] = useState(0);
 
   const [name, setName] = useState('');
@@ -125,8 +131,6 @@ export function Form() {
 
     const newDate = dateobj.toISOString();
 
-    const api = setupAPIClient();
-
     const response = await api.post('/client',
       {
         name: name,
@@ -171,6 +175,11 @@ export function Form() {
 
   return (
     <>
+      <Head>
+        <title>Novo Processo - DyManager</title>
+      </Head>
+      <Header />
+      
       <main className={styles.container}>
         <Tabs className={styles.tabs} selectedIndex={tabIndex}
           onSelect={(index) => { setTabIndex(index) }}>

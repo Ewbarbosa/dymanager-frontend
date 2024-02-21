@@ -1,17 +1,29 @@
 import styles from './styles.module.scss';
 
+import { useState, useEffect } from 'react';
+
 export function Table({ data }) {
 
-  //console.log(data[0]);
+  const [key, setKey] = useState([]);
 
-  const keys = Object.keys(data[0]);
+  useEffect(() => {
 
+    handleData();
+
+  }, []);
+
+  const handleData = () => {
+    if (data.length > 0) {
+      setKey(Object.keys(data[0]))
+    }
+  }
+  
   return (
     <div className={styles.tableContainer}>
       <table className={styles.table}>
         <thead className={styles.tHead}>
           <tr>
-            {keys.map((item, index) => (
+            {key.map((item, index) => (
               <th className={styles.th} key={index}>{item}</th>
             ))}
           </tr>
@@ -21,7 +33,7 @@ export function Table({ data }) {
           {data.map((obj, index) => (
             <tr key={index}>
 
-              {keys.map((item, index) => {
+              {key.map((item, index) => {
                 const value = obj[item];
                 return <td className={styles.td} key={index}>{value}</td>
               })}
@@ -31,6 +43,5 @@ export function Table({ data }) {
         </tbody>
       </table>
     </div>
-
   )
 }
