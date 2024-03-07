@@ -95,9 +95,7 @@ export default function NewClient() {
     setLoading(true);
 
     try {
-      addClient();
-
-      toast.success('Salvo com sucesso!');
+      addClient();      
 
       await sleep(3000);
       // após salvar limpa os campos
@@ -119,6 +117,8 @@ export default function NewClient() {
 
       setTabIndex(0);
       setLoading(false);
+
+      toast.success('Salvo com sucesso!');
 
     } catch (err) {
       toast.warning('Erro ao salvar os dados: ' + err.message);
@@ -290,7 +290,7 @@ export default function NewClient() {
                 onClick={changeTab}
               >
                 Voltar
-              </button>
+              </button> 
 
               <Button
                 className={styles.buttonAdd}
