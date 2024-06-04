@@ -4,7 +4,6 @@ import Head from 'next/head';
 
 import { Header } from '../../components/ui/Header';
 import { Table } from '../../components/ui/Table'
-import { ModalFormProcess } from '../../components/ui/ModalFormProcess';
 
 import Link from 'next/link';
 
@@ -12,9 +11,6 @@ import { MdOutlineAddCircle } from 'react-icons/md'
 import { canSSRAuth } from '../../utils/canSSRAuth';
 
 import { setupAPIClient } from '../../services/api';
-import { useState } from 'react';
-
-import Modal from 'react-modal'
 
 // tipagem para o objeto recebido do server side
 type ProcessProps = {
@@ -23,15 +19,7 @@ type ProcessProps = {
   number: number;
 }
 
-export default function Process({ process }) {
-
-  Modal.setAppElement('#__next');
-
-  const [modalVisible, setModalVisible] = useState(false);
-
-  function handleCloseModal() {
-    setModalVisible(!modalVisible);
-  }
+export default function Process({ process }) {  
 
   var array: Array<ProcessProps> = [];
 
@@ -61,12 +49,6 @@ export default function Process({ process }) {
         <Table data={array} />
       </div>
 
-      {modalVisible && (
-        <ModalFormProcess
-          isOpen={modalVisible}
-          onRequestClose={handleCloseModal}
-        />
-      )}
     </>
   )
 }

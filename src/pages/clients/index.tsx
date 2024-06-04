@@ -11,9 +11,6 @@ import { Table } from '../../components/ui/Table'
 
 import { setupAPIClient } from '../../services/api'
 
-import Modal from 'react-modal'
-import { ModalFormClient } from '../../components/ui/ModalFormClient'
-
 import { MdOutlineAddCircle } from 'react-icons/md'
 
 import { canSSRAuth } from '../../utils/canSSRAuth'
@@ -30,9 +27,7 @@ export type ClientProps = {
 
 export default function Clients({ clients }) {
 
-  const [listClient, setListClient] = useState<ClientProps[]>([]);
-
-  Modal.setAppElement('#__next');
+  const [listClient, setListClient] = useState<ClientProps[]>([]);  
 
   var array: Array<ClientProps> = [];
 
