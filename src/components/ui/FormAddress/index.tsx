@@ -3,6 +3,7 @@
 
 import styles from './styles.module.scss'
 import { toast } from 'react-toastify'
+import { mask } from 'remask';
 
 import { Input } from '../Input'
 import { Button } from '../Button'
@@ -23,33 +24,62 @@ export interface AddressData {
 // a funcao onSubmit é passada com propriedade
 // onSubmit é um função sem retorno
 interface FormComponentProps {
-  onSubmit: (data: AddressData) => void;
+  onSubmit: (data: AddressData, resetForm: () => void) => void;
 }
 
+// FormAddress é exportado passando onSubmit como parametro para ser usado no componente pai
+// onSumit contem "data", dados do formulario
+// e resetForm reseta os dados preenchidos, é passado como funcao que não haverá retorno
 export function FormAddress({ onSubmit }: FormComponentProps) {
 
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState<AddressData>({
+  const initialFormdata: AddressData = {
     street: '',
     complement: '',
     zip_code: '',
     district: '',
     city: '',
     state: ''
-  })
+  }
+
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState<AddressData>(initialFormdata);
+
+  function resetForm() {
+    setFormData(initialFormdata);
+  }
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
+
+    let newValue;
+    if (name === 'zip_code') {
+      newValue = mask(value, ['99999-999']);
+
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: newValue
+      }))
+
+      // passa o value pra realizar a consulta na api e retornar os valores do endereço
+      handleCep(value);
+    }
+
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }))
   }
 
+  //manipulador de evento que é chamado quando o form é enviado
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (!formData.zip_code) {
+      toast.warning("Preencha os campos!")
+      return
+    }
     setLoading(true);
-    onSubmit(formData);
+    onSubmit(formData, resetForm);
     setLoading(false);
   }
 
@@ -61,7 +91,15 @@ export function FormAddress({ onSubmit }: FormComponentProps) {
     } else {
       try {
         const response = await apiCEP.get(`${zip_code}/json`);
-        //console.log(response.data);
+
+        setFormData({
+          street: response.data.logradouro,
+          complement: '',
+          zip_code: response.data.cep,
+          district: response.data.bairro,
+          city: response.data.localidade,
+          state: response.data.uf
+        })
 
         formData.zip_code = response.data.cep;
         formData.street = response.data.logradouro;
@@ -79,27 +117,37 @@ export function FormAddress({ onSubmit }: FormComponentProps) {
     <>
       <h1>Endereço</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <Input placeholder='Rua/Avenida, 123'
+        <Input
+          placeholder='Rua/Avenida, 123'
+          name='street'
           value={formData.street}
           onChange={handleChange}
         />
 
-        <Input placeholder='CEP'
+        <Input
+          placeholder='CEP'
+          name='zip_code'
           value={formData.zip_code}
-          onChange={() => handleCep(formData.zip_code)}
+          onChange={handleChange}
         />
 
-        <Input placeholder='Bairro'
+        <Input
+          placeholder='Bairro'
+          name='district'
           value={formData.district}
           onChange={handleChange}
         />
 
-        <Input placeholder='Cidade'
+        <Input
+          placeholder='Cidade'
+          name='city'
           value={formData.city}
           onChange={handleChange}
         />
 
-        <Input placeholder='Estado'
+        <Input
+          placeholder='Estado'
+          name='state'
           value={formData.state}
           onChange={handleChange}
         />
@@ -111,7 +159,7 @@ export function FormAddress({ onSubmit }: FormComponentProps) {
         >
           Salvar
         </Button>
-      </form>      
+      </form>
     </>
   )
 }

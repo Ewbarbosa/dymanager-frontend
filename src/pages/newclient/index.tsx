@@ -5,9 +5,11 @@ import { FormPerson } from '../../components/ui/FormPerson';
 import { FormAddress } from '../../components/ui/FormAddress';
 
 import Head from 'next/head';
+import Link from 'next/link';
+import Router from 'next/router'
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { FormEvent, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
 
 import { AuthContext } from '../../contexts/AuthContext';
 
@@ -21,6 +23,7 @@ import { AddressData } from '../../components/ui/FormAddress';
 export default function NewClient() {
 
   const [tabIndex, setTabIndex] = useState(0);
+  const [personId, setPersonId] = useState(0);
 
   const { user } = useContext(AuthContext);
 
@@ -57,16 +60,17 @@ export default function NewClient() {
 
       if (response.status === 200) {
         toast.success('Salvo com sucesso!');
-        resetForm();
+        setPersonId(response.data.id);
         changeTab();
+        resetForm();
       }
 
-    } catch (err) {      
-      toast.warning('Erro: ' + err.response.data.error);      
+    } catch (err) {
+      toast.warning('Erro: ' + err.response.data.error);
     }
   }
 
-  async function handleFormAddressSubmit(data: AddressData) {
+  async function handleFormAddressSubmit(data: AddressData, resetForm: () => void) {
     try {
       const response = await api.post('/person/address', {
         street: data.street,
@@ -75,18 +79,22 @@ export default function NewClient() {
         district: data.district,
         city: data.city,
         state: data.state,
+        person_id: personId,
         user_id: user.id
       });
 
       if (response.status === 200) {
         toast.success('Salvo com sucesso!');
+        resetForm();
+        Router.push('/clients')
       }
 
-    } catch (error) {
-      console.error('Erro ao salvar o endereço: ', error)
+    } catch (err) {
+      toast.warning('Erro: ' + err.response.data.error);
+      resetForm();
     }
   }
-  
+
   return (
     <>
       <Head>
@@ -95,6 +103,7 @@ export default function NewClient() {
       <Header />
 
       <main className={styles.container}>
+
         <Tabs className={styles.tabs} selectedIndex={tabIndex}
           onSelect={(index) => { setTabIndex(index) }}>
 
@@ -113,6 +122,7 @@ export default function NewClient() {
           </TabList>
 
           <TabPanel>
+
             <FormPerson onSubmit={(data, resetForm) => handleFormPersonSubmit(data, resetForm)} />
 
           </TabPanel>
@@ -121,12 +131,14 @@ export default function NewClient() {
           <TabPanel>
 
             <FormAddress onSubmit={handleFormAddressSubmit} />
+
             <button
-              className={styles.button}
-              onClick={changeTab}
+              className={styles.button}              
               type='button'
             >
-              Voltar
+              <Link href="/dashboard">
+                Cancelar
+              </Link>
             </button>
 
           </TabPanel>

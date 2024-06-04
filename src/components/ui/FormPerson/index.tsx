@@ -34,7 +34,7 @@ interface FormComponentProps {
 
 {/* FormPerson é exportado passando onSubmit como parametro para ser utilizado no componente pai
   onSubmit contem 'data', dados do formulario
-  E resetForm que serve pra resetar os dados do formulario, resetForm é passado como uma função void(sem retorno)
+  E resetForm serve pra resetar os dados do formulario, resetForm é passado como uma função void(sem retorno)
 */}
 export function FormPerson({ onSubmit }: FormComponentProps) {  
 
@@ -78,7 +78,7 @@ export function FormPerson({ onSubmit }: FormComponentProps) {
     // funcao passada como prop para o componente FormPerson
     // formData é o estado atual do formulario, contem os dados inseridos pelo usuário
     // resetForm é uma função dentro do componente, redefine os campos para os valores iniciais
-    if(formData.cnpjcpf === '' || formData.born_in === '') {
+    if(!formData.cnpjcpf || !formData.born_in) {
       toast.warning("Campo CPF/CNPJ é obrigatório")
       return
     }
@@ -197,7 +197,7 @@ export function FormPerson({ onSubmit }: FormComponentProps) {
           className={styles.button}
           type='submit'
         >
-          Avançar
+          Salvar e Avançar
         </button>
 
       </form>
