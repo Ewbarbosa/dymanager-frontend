@@ -38,9 +38,16 @@ export function Header() {
                 <a onClick={activeMenu}>Home</a>
               </Link>
             </li>
+
             <li>
-              <Link href="/client">
+              <Link href="/clients">
                 <a onClick={activeMenu}>Clientes</a>
+              </Link>
+            </li>
+
+            <li>
+              <Link href="/adverse">
+                <a onClick={activeMenu}>Adversos</a>
               </Link>
             </li>
 

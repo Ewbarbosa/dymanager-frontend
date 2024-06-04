@@ -13,6 +13,7 @@ import { ClientProvider } from '../contexts/ClientContext'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+
     <AuthProvider>
       <ClientProvider>
         <Component {...pageProps} />
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ToastContainer autoClose={2000} />
       </ClientProvider>
     </AuthProvider>
+
   )
 }
 

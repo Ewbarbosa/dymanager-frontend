@@ -69,28 +69,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
    */
   const isAuthenticated = !!user;
 
-  useEffect(()=>{
-    // tentar pegar algo no cookie
+  useEffect(() => {
 
-    const {'@dymanager.token': token} = parseCookies();
-
-    if(token){
-      api.get('/me').then(response => {
-        const {id, name, email} = response.data;
-
-        setUser({
-          id,
-          name,
-          email
-        })
-
-      })
-      .catch(() =>  {
-        // se deu errado vamos deslogar o usuario
-        signOut();
-      })
-    }
+    me()
   }, [])
+
+  async function me() {
+    // tentar pegar algo no cookie
+    const { '@dymanager.token': token } = parseCookies();
+
+    try {
+      const response = await api.get('/me');
+
+      const { id, name, email} = response.data.user;
+      
+      setUser({
+        id,
+        name,
+        email
+      })
+      
+    } catch {
+      // se deu errado vamos deslogar o usuario
+      signOut();
+    }    
+  }
 
   // signIn recebe os dados de email e senha
   async function signIn({ email, password }: SignInProps) {
@@ -101,6 +104,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
 
       const { id, name, token } = response.data;
+
+      localStorage.setItem('id_user', id);
 
       setCookie(undefined, '@dymanager.token', token, {
         maxAge: 60 * 60 * 24, //expirar em um dia
@@ -117,7 +122,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       api.defaults.headers['Authorization'] = `Bearer ${token}`
 
       toast.success('Bem vindo!');
-      
+
       // redirecionar o usuario para a pagina inicial
       Router.push('/dashboard');
 

@@ -169,7 +169,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
   const response = await api.get('/processes');
 
-  const res = await api.get('/clients');
+  const res = await api.get('/persons');
 
   console.log(res.data);
 

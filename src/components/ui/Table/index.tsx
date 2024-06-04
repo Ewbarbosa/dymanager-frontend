@@ -17,7 +17,7 @@ export function Table({ data }) {
       setKey(Object.keys(data[0]))
     }
   }
-  
+
   return (
     <div className={styles.tableContainer}>
       <table className={styles.table}>
@@ -30,6 +30,7 @@ export function Table({ data }) {
         </thead>
 
         <tbody className={styles.tBody}>
+
           {data.map((obj, index) => (
             <tr key={index}>
 
@@ -40,6 +41,7 @@ export function Table({ data }) {
 
             </tr>
           ))}
+
         </tbody>
       </table>
     </div>

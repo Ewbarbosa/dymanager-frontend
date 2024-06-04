@@ -84,7 +84,7 @@ export default function NewProcess({ clients }) {
     })
 
     for (let i = 0; i < optionSelected.length; i++) {
-      const res = await api.post('/clientprocess', {
+      const res = await api.post('/personprocess', {
         client_id: optionSelected[i].value,
         process_id: response.data.id
       })
@@ -234,7 +234,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
   const response = await api.get('/processes');
 
-  const res = await api.get('/clients');
+  const res = await api.get('/persons');
 
   //console.log(res.data);
 

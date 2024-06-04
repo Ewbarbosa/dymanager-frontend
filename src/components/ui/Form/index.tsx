@@ -89,6 +89,8 @@ export function Form() {
     setLoading(true);
 
     try {
+      toast.info('Aguarde...');
+      alert('passei');
       addClient();
 
       toast.success('Salvo com sucesso!');
@@ -121,13 +123,15 @@ export function Form() {
 
   async function addClient() {
 
+    toast.info('addClient');
+
     const dateobj = new Date(born_in);
 
     const newDate = dateobj.toISOString();
 
     const api = setupAPIClient();
 
-    const response = await api.post('/client',
+    const response = await api.post('/person',
       {
         name: name,
         cnpjcpf: cnpjcpf,
@@ -142,7 +146,9 @@ export function Form() {
 
     const { id } = response.data;
 
-    await api.post('/client/address',
+    toast.info('addAddress');
+
+    await api.post('/person/address',
       {
         street: street,
         zip_code: zip_code,
@@ -233,7 +239,7 @@ export function Form() {
                 onChange={(e) => setStatus(e.target.value)}
               />
               <button
-                className={styles.buttonAdd}
+                className={styles.button}
                 type='submit'
               >
                 Avançar

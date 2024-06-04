@@ -28,15 +28,9 @@ export type ClientProps = {
   telefone: string;
 }
 
-export default function Client({ clients }) {
-
-  const [modalVisible, setModalVisible] = useState(false);
+export default function Clients({ clients }) {
 
   const [listClient, setListClient] = useState<ClientProps[]>([]);
-
-  function handleCloseModal() {
-    setModalVisible(!modalVisible);
-  }
 
   Modal.setAppElement('#__next');
 
@@ -66,20 +60,17 @@ export default function Client({ clients }) {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1>Novo Cliente</h1>
-          {/*<MdOutlineAddCircle onClick={handleCloseModal} color='#fff' size={36} />*/}
+
           <Link href="/newclient">
-            <MdOutlineAddCircle color='#fff' size={36} />
+            <a>
+              <MdOutlineAddCircle color='#fff' size={36} />
+            </a>
           </Link>
+
         </div>
         <Table data={array} />
       </div>
 
-      {modalVisible && (
-        <ModalFormClient
-          isOpen={modalVisible}
-          onRequestClose={handleCloseModal}
-        />
-      )}
     </>
   )
 }
@@ -88,9 +79,7 @@ export const getServerSideProps = canSSRAuth(async (ctx) => {
 
   const api = setupAPIClient(ctx);
 
-  const response = await api.get('/clients');
-
-  //console.log(response.data);
+  const response = await api.get('/persons');
 
   return {
     props: {

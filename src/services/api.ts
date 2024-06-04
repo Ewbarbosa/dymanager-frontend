@@ -11,10 +11,9 @@ import { signOut } from '../contexts/AuthContext';
 export function setupAPIClient(ctx = undefined) {
   let cookies = parseCookies(ctx);
 
-  const api = axios.create({
-    //baseURL: 'http://dytech.sytes.net:3333',
-    baseURL: 'https://dy-backend.onrender.com',  // server novo
-    //baseURL: 'http://127.0.0.1:3333',
+  const api = axios.create({    
+    //baseURL: 'https://dymanager-backend.onrender.com',  // server novo
+    baseURL: 'https://dymanager-backend.onrender.com',
     headers: {
       Authorization: `Bearer ${cookies['@dymanager.token']}`
     }

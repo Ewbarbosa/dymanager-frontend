@@ -25,7 +25,7 @@ export function ClientProvider({ children }) {
 
   async function searchClient(cnpjcpf: string) {
     try {
-      const response = await api.get('/client', {
+      const response = await api.get('/person', {
         params: {
           cnpjcpf
         }
