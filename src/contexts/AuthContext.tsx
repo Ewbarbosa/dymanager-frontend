@@ -103,9 +103,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         password
       })
 
-      const { id, name, token } = response.data;
-
-      localStorage.setItem('id_user', id);
+      const { id, name, token } = response.data;      
 
       setCookie(undefined, '@dymanager.token', token, {
         maxAge: 60 * 60 * 24, //expirar em um dia

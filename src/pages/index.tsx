@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../../styles/home.module.scss'
 
 // logo do sistema
@@ -12,9 +11,6 @@ import { Button } from '../components/ui/Button'
 /* contexto */
 import { AuthContext } from '../contexts/AuthContext'
 import { useContext, FormEvent, useState} from 'react'
-
-// import para usar links
-import Link from 'next/link'
 
 import { canSSRGuest } from '../utils/canSSRGuest'
 
