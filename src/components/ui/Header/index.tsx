@@ -26,40 +26,40 @@ export function Header() {
         {/*<h1>{user?.name}</h1>*/}
 
         <nav className={styles.nav}>
-          <Link href="/dashboard">
-            <a className={styles.logo2}>DyManager</a>
+          <Link className={styles.logo2} href="/dashboard">
+            DyManager
           </Link>
 
           <button className={`${styles.hamburger} ${active ? styles.x : ""}`} onClick={activeMenu}></button>
 
           <ul className={`${styles.list} ${active ? styles.active : ""}`}>
-            <li>
+            <li onClick={activeMenu}>
               <Link href="/dashboard">
-                <a onClick={activeMenu}>Home</a>
+                Home
               </Link>
             </li>
 
-            <li>
+            <li onClick={activeMenu}>
               <Link href="/clients">
-                <a onClick={activeMenu}>Clientes</a>
+                Clientes
               </Link>
             </li>
 
-            <li>
+            <li onClick={activeMenu}>
               <Link href="/adverse">
-                <a onClick={activeMenu}>Adversos</a>
+                Adversos
               </Link>
             </li>
 
-            <li>
+            <li onClick={activeMenu}>
               <Link href="/process">
-                <a>Processos</a>
+                Processos
               </Link>
             </li>
 
             <li>
               <Link href="/about">
-                <a>Sobre</a>
+                Sobre
               </Link>
             </li>
 

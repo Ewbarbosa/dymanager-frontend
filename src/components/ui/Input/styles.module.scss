@@ -12,3 +12,8 @@
 .input::placeholder{
   color: var(--dark-blue);
 }
+
+.input:focus {
+  outline: none; /* Remove o contorno padrão do foco */
+  border: 1px solid var(--blue);    /* Adicione uma borda de foco, se desejar */
+}

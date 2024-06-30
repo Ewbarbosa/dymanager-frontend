@@ -22,7 +22,7 @@ export function setupAPIClient(ctx = undefined) {
   api.interceptors.response.use(response => {
     return response;
   }, (error: AxiosError) => {
-    if (error.response.status === 401) {
+    if (error.response?.status === 401) {
       // qualquer erro 401 devemos deslogar o usuario
       signOut();
       if (typeof window !== undefined) {

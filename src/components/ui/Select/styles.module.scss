@@ -1,0 +1,23 @@
+.select {
+    margin-bottom: 1rem;
+    height: 35px;
+    border: 0;
+    border-radius: 0.5rem;
+    background-color: var(--dark2);
+    color: var(--white);
+    padding: 0.4rem;
+    border: 1px solid var(--gray2);
+}
+
+
+/* Estilo para o primeiro item da lista de opções */
+.select option:first-child {
+    color: var(--dark-blue);
+    //font-weight: bold; /* Exemplo: torna o primeiro item em negrito */
+}
+
+.select:focus {
+    outline: none;
+    /* Remove o contorno padrão do foco */
+    border: 2px solid var(--blue);    /* Adicione uma borda de foco, se desejar */
+}

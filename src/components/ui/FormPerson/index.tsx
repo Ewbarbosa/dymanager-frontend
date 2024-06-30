@@ -4,6 +4,7 @@
 import styles from './styles.module.scss'
 
 import { Input } from '../Input';
+import { Select } from '../Select'
 
 import { ChangeEvent, FormEvent, useState } from 'react';
 
@@ -26,6 +27,11 @@ export interface PersonData {
   status: string;
 }
 
+interface Option {
+  value: string;
+  label: string;
+}
+
 // a funcao onSubmit é passada com propriedade
 // onSubmit é um função sem retorno
 interface FormComponentProps {
@@ -36,7 +42,7 @@ interface FormComponentProps {
   onSubmit contem 'data', dados do formulario
   E resetForm serve pra resetar os dados do formulario, resetForm é passado como uma função void(sem retorno)
 */}
-export function FormPerson({ onSubmit }: FormComponentProps) {  
+export function FormPerson({ onSubmit }: FormComponentProps) {
 
   const initialFormData: PersonData = {
     name: '',
@@ -49,39 +55,47 @@ export function FormPerson({ onSubmit }: FormComponentProps) {
     telephone: '',
     telephone2: '',
     email: '',
-    type: '',
+    type: 'selecione', // define selecione como padrão
     status: ''
   }
 
   const [formData, setFormData] = useState<PersonData>(initialFormData);
 
   // reseta os dados do form
-  function resetForm(){
+  function resetForm() {
     setFormData(initialFormData);
   }
 
   // tem como objetivo capturar o que foi digitado e passar para o formData
   // é necessário que o input tenha a propriedade NAME
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
+
+    console.log(value)
 
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
-  }
-  
-    //manipulador de evento que é chamado quando o form é enviado
+  }  
+
+  //manipulador de evento que é chamado quando o form é enviado
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     // funcao passada como prop para o componente FormPerson
     // formData é o estado atual do formulario, contem os dados inseridos pelo usuário
     // resetForm é uma função dentro do componente, redefine os campos para os valores iniciais
-    if(!formData.cnpjcpf || !formData.born_in) {
-      toast.warning("Campo CPF/CNPJ é obrigatório")
+
+    if (formData.type === 'selecione') {
+      toast.warning('Selecione o tipo do registro');
       return
     }
+
+    if (!formData.cnpjcpf || !formData.born_in) {
+      toast.warning("Campo CPF/CNPJ é obrigatório")
+      return
+    }    
     onSubmit(formData, resetForm);
   }
 
@@ -103,20 +117,26 @@ export function FormPerson({ onSubmit }: FormComponentProps) {
     }));
   }
 
+  const options: Option[] = [
+    { value: 'selecione', label: 'Selecione' },
+    { value: 'cliente', label: 'Cliente' },
+    { value: 'adverso', label: 'Adverso' },
+  ]
+
   return (
     <>
       <h1>Dados Pessoais</h1>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form} onSubmit={handleSubmit}>        
 
-        <Input
-          placeholder='Cliente ou Adverso'
+        <Select
           name="type"
+          options={options}
           value={formData.type}
           onChange={handleChange}
         />
 
         <Input
-          placeholder='Nome completo'
+          placeholder='Nome completo / Descrição'
           name="name"
           value={formData.name}
           onChange={handleChange}

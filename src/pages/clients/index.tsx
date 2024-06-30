@@ -56,10 +56,8 @@ export default function Clients({ clients }) {
         <div className={styles.content}>
           <h1>Novo Cliente</h1>
 
-          <Link href="/newclient">
-            <a>
-              <MdOutlineAddCircle color='#fff' size={36} />
-            </a>
+          <Link href="/newclient">            
+              <MdOutlineAddCircle color='#fff' size={36} />            
           </Link>
 
         </div>
