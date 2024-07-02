@@ -55,7 +55,7 @@ export default function NewClient() {
         email: data.email,
         type: data.type,
         status: data.status,
-        user_id: user.id
+        user_id: user?.id
       });
 
       if (response.status === 200) {
@@ -80,7 +80,7 @@ export default function NewClient() {
         city: data.city,
         state: data.state,
         person_id: personId,
-        user_id: user.id
+        user_id: user?.id
       });
 
       if (response.status === 200) {

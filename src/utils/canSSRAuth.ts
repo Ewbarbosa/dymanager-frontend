@@ -2,23 +2,19 @@ import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult
 import { parseCookies, destroyCookie } from "nookies";
 import { AuthTokenError } from "../services/errors/AuthTokenError";
 
-// funcao apenas para usuarios logados
-
-export function canSSRAuth<P>(fn: GetServerSideProps<P>) {
-
+// Função para páginas que só podem ser acessadas por usuários logados
+export function canSSRAuth<P extends { [key: string]: any }>(fn: GetServerSideProps<P>): GetServerSideProps<P> {
   return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
-
     const cookies = parseCookies(ctx);
-
     const token = cookies['@dymanager.token'];
 
     if (!token) {
       return {
         redirect: {
           destination: '/',
-          permanent: false
-        }
-      }
+          permanent: false,
+        },
+      };
     }
 
     try {
@@ -31,10 +27,14 @@ export function canSSRAuth<P>(fn: GetServerSideProps<P>) {
           redirect: {
             destination: '/',
             permanent: false,
-          }
-        }
-
+          },
+        };
       }
+
+      // Adicione um retorno padrão em caso de outros erros
+      return {
+        notFound: true,
+      };
     }
-  }
+  };
 }

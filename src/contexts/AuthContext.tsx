@@ -20,7 +20,7 @@ import { toast } from 'react-toastify'
   recebe as credenciais que é do tipo SignInProps criado logo abaixo
 */
 type AuthContextData = {
-  user: UserProps;
+  user: UserProps | undefined;
   isAuthenticated: boolean;
   signIn: (credentials: SignInProps) => Promise<void>;
   signOut: () => void;

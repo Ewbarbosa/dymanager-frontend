@@ -1,3 +1,5 @@
+'use client'
+
 import styles from './styles.module.scss'
 
 import { useState } from 'react'
@@ -42,7 +44,7 @@ export default function Clients({ clients }) {
 
   useEffect(() => {
     setListClient(clients);
-  }, [])
+  }, [clients])
 
   return (
     <>

@@ -10,7 +10,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import { AuthProvider } from '../contexts/AuthContext'
 import { ClientProvider } from '../contexts/ClientContext'
 
-
 function MyApp({ Component, pageProps }: AppProps) {
   return (
 

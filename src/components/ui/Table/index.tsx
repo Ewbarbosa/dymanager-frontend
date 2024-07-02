@@ -10,11 +10,11 @@ export function Table({ data }) {
 
     handleData();
 
-  }, []);
+  });
 
   const handleData = () => {
     if (data.length > 0) {
-      setKey(Object.keys(data[0]))
+      //setKey(Object.keys(data[0]))
     }
   }
 
